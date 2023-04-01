@@ -30,8 +30,25 @@ namespace CredentialGuard.Api
             DataBaseDealer.Give(services, Configuration);
             RepositoryDealer.Give(services);
             ServiceDealer.Give(services);
+            FluentValidationConfigurator.Configure(services);
 
-            services.AddControllers();
+            services.AddControllers().ConfigureApiBehaviorOptions(options=> {
+
+                options.InvalidModelStateResponseFactory = c =>
+                {
+                    var errors = c.ModelState.Values.Where(v => v.Errors.Count > 0)
+                                    .SelectMany(v => v.Errors).Select(p => p.ErrorMessage);
+                    var result = new 
+                    {
+                        Title = "Error",
+                        Errors = errors,
+                        TraceId = c.HttpContext.TraceIdentifier
+                    };
+
+                    return new BadRequestObjectResult(result);
+                };
+
+            });
 
             services.AddSwaggerGen(c =>
             {
