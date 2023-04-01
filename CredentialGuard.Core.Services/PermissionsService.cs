@@ -12,9 +12,9 @@ namespace CredentialGuard.Core.Services
 {
     public class PermissionsService : IService<Permission>
     {
-        private readonly Repository<Permission> _repository;
+        private readonly IRepository<Permission> _repository;
 
-        public PermissionsService(Repository<Permission> repository)
+        public PermissionsService(IRepository<Permission> repository)
         {
             _repository = repository;
         }

@@ -1,4 +1,5 @@
 ﻿using CredentialGuard.Core.Contracts;
+using CredentialGuard.Core.Entities;
 using CredentialGuard.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +9,7 @@ namespace CredentialGuard.Infrastructure.Glue
     {
         public static void Give(this IServiceCollection services)
         {
-            services.AddTransient(typeof(IService<>), typeof(PermissionsService));
+            services.AddTransient(typeof(IService<Permission>), typeof(PermissionsService));
         }
     }
 }

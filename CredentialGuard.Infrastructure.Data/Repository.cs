@@ -10,8 +10,8 @@ namespace CredentialGuard.Infrastructure.Data
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity, new()
     {
-        private readonly DbContext _dbContext;
-        public Repository(DbContext dbContext)
+        private readonly CredentialGuardDbContext _dbContext;
+        public Repository(CredentialGuardDbContext dbContext)
         {
             _dbContext = dbContext;
         }
