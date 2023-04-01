@@ -1,3 +1,4 @@
+using CredentialGuard.Infrastructure.Glue;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,8 +27,12 @@ namespace CredentialGuard.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            DataBaseDealer.Give(services, Configuration);
+            RepositoryDealer.Give(services);
+            ServiceDealer.Give(services);
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CredentialGuard.Api", Version = "v1" });
