@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using System;
 
 namespace CredentialGuard.Core.Entities
 {
@@ -11,5 +9,6 @@ namespace CredentialGuard.Core.Entities
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
         public int PermissionTypeId { get; set; }
+        public DateTime PermissionDate { get; set; }
     }
 }
