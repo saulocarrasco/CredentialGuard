@@ -14,7 +14,7 @@ namespace CredentialGuard.Infrastructure.Glue
 
             services.AddDbContext<CredentialGuardDbContext>(options =>
             {
-                options.UseSqlServer(sqlDataConnectionString);
+                options.UseSqlServer(sqlDataConnectionString, m=>m.MigrationsAssembly("CredentialGuard.Infrastructure.Data"));
             });
         }
     }

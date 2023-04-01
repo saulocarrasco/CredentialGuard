@@ -18,7 +18,7 @@ namespace CredentialGuard.Infrastructure.Data
 
             modelBuilder.Entity<Employee>().HasData(new Employee { Id = 1, Name="Naruto", LastName="Uzumaki", Active = true, CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now });
             modelBuilder.Entity<Employee>().HasData(new Employee { Id = 2, Name = "Sasori", LastName = "Arena Roja", Active = true, CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now });
-            modelBuilder.Entity<Employee>().HasData(new Employee { Id = 2, Name = "Asuma", LastName = "Sarutobi", Active = true, CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now });
+            modelBuilder.Entity<Employee>().HasData(new Employee { Id = 3, Name = "Asuma", LastName = "Sarutobi", Active = true, CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now });
 
             base.OnModelCreating(modelBuilder);
         }
