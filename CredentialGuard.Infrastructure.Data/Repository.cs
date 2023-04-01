@@ -22,9 +22,13 @@ namespace CredentialGuard.Infrastructure.Data
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> DeleteAsync(T entity)
+        public async Task<bool> DeleteAsync(Expression<Func<T, bool>> expression)
         {
-            _dbContext.Set<T>().Remove(entity);
+           var currentEntity = await _dbContext.Set<T>().FindAsync(expression);
+            
+            currentEntity.Active = false;
+
+            _dbContext.Entry(currentEntity).State = EntityState.Modified;
 
             return await _dbContext.SaveChangesAsync() > 0;
         }

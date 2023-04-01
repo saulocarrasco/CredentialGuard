@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace CredentialGuard.Core.Services
 {
-    public class PermissionsService : IService<Permission>
+    public class EmployeeService : IService<Employee>
     {
-        private readonly IRepository<Permission> _repository;
+        private readonly IRepository<Employee> _repository;
 
-        public PermissionsService(IRepository<Permission> repository)
+        public EmployeeService(IRepository<Employee> repository)
         {
             _repository = repository;
         }
 
-        public async Task<OperationResult> AddAsync(Permission entity)
+        public async Task<OperationResult> AddAsync(Employee entity)
         {
             var sucess = await _repository.AddAsync(entity);
 
@@ -27,7 +27,7 @@ namespace CredentialGuard.Core.Services
                 return new OperationResult
                 {
                     IsSucesss = true,
-                    Messages = new string[] { $"{nameof(Permission)} was added successfully" },
+                    Messages = new string[] { $"{nameof(Employee)} was added successfully" },
                 };
             }
 
@@ -40,7 +40,7 @@ namespace CredentialGuard.Core.Services
 
         public async Task<OperationResult> DeleteAsync(int id)
         {
-            Expression<Func<Permission, bool>> expression = i => i.Id == id;
+            Expression<Func<Employee, bool>> expression = i => i.Id == id;
 
             var sucess = await _repository.DeleteAsync(expression);
 
@@ -49,7 +49,7 @@ namespace CredentialGuard.Core.Services
                 return new OperationResult
                 {
                     IsSucesss = true,
-                    Messages = new string[] { $"{nameof(Permission)} was added successfully" },
+                    Messages = new string[] { $"{nameof(Employee)} was added successfully" },
                 };
             }
 
@@ -60,15 +60,15 @@ namespace CredentialGuard.Core.Services
             };
         }
 
-        public async Task<PagedResult<Permission>> GetAsync(int id)
+        public async Task<PagedResult<Employee>> GetAsync(int id)
         {
-            Expression<Func<Permission, bool>> expression = i => i.Id == id;
+            Expression<Func<Employee, bool>> expression = i => i.Id == id;
 
             var model = await _repository.GetAsync(expression);
 
-            return new PagedResult<Permission>()
+            return new PagedResult<Employee>()
             {
-                Data = new List<Permission>
+                Data = new List<Employee>
                 {
                     model
                 },
@@ -77,11 +77,11 @@ namespace CredentialGuard.Core.Services
             };
         }
 
-        public async Task<PagedResult<Permission>> GetAllAsync()
+        public async Task<PagedResult<Employee>> GetAllAsync()
         {
             var result = await _repository.GetAllAsync();
 
-            return new PagedResult<Permission>()
+            return new PagedResult<Employee>()
             {
                 Data = result.ToList(),
                 CurrentPage = 1,
@@ -89,24 +89,24 @@ namespace CredentialGuard.Core.Services
             };
         }
 
-        public async Task<OperationResult> UpdateAsync(int id, Permission entity)
+        public async Task<OperationResult> UpdateAsync(int id, Employee entity)
         {
-            Expression<Func<Permission, bool>> expression = i => i.Id == id;
-            
-            var currentPermission = await _repository.GetAsync(expression);
+            Expression<Func<Employee, bool>> expression = i => i.Id == id;
 
-            currentPermission.PermissionTypeId = entity.PermissionTypeId;
-            currentPermission.EmployeeId = entity.EmployeeId;
-            currentPermission.UpdatedAt = DateTime.UtcNow;
+            var currentEmployee = await _repository.GetAsync(expression);
 
-            var sucess = await _repository.UpdateAsync(currentPermission);
+            currentEmployee.Name = entity.Name;
+            currentEmployee.LastName = entity.LastName;
+            currentEmployee.UpdatedAt = DateTime.UtcNow;
+
+            var sucess = await _repository.UpdateAsync(currentEmployee);
 
             if (sucess)
             {
                 return new OperationResult
                 {
                     IsSucesss = true,
-                    Messages = new string[] { $"{nameof(Permission)} was added successfully" },
+                    Messages = new string[] { $"{nameof(Employee)} was added successfully" },
                 };
             }
 

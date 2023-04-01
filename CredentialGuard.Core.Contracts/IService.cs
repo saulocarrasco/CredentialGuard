@@ -7,8 +7,8 @@ namespace CredentialGuard.Core.Contracts
     {
         Task<PagedResult<T>> GetAllAsync();
         Task<OperationResult> AddAsync(T entity);
-        Task<OperationResult> UpdateAsync(T entity);
+        Task<OperationResult> UpdateAsync(int id, T entity);
         Task<PagedResult<T>> GetAsync(int id);
-        Task<OperationResult> DeleteAsync(T entity);
+        Task<OperationResult> DeleteAsync(int id);
     }
 }

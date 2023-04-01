@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace CredentialGuard.Core.Services
 {
-    public class PermissionsService : IService<Permission>
+    public class PermissionsTypesService : IService<PermissionType>
     {
-        private readonly IRepository<Permission> _repository;
+        private readonly IRepository<PermissionType> _repository;
 
-        public PermissionsService(IRepository<Permission> repository)
+        public PermissionsTypesService(IRepository<PermissionType> repository)
         {
             _repository = repository;
         }
 
-        public async Task<OperationResult> AddAsync(Permission entity)
+        public async Task<OperationResult> AddAsync(PermissionType entity)
         {
             var sucess = await _repository.AddAsync(entity);
 
@@ -27,7 +27,7 @@ namespace CredentialGuard.Core.Services
                 return new OperationResult
                 {
                     IsSucesss = true,
-                    Messages = new string[] { $"{nameof(Permission)} was added successfully" },
+                    Messages = new string[] { $"{nameof(PermissionType)} was added successfully" },
                 };
             }
 
@@ -40,7 +40,7 @@ namespace CredentialGuard.Core.Services
 
         public async Task<OperationResult> DeleteAsync(int id)
         {
-            Expression<Func<Permission, bool>> expression = i => i.Id == id;
+            Expression<Func<PermissionType, bool>> expression = i => i.Id == id;
 
             var sucess = await _repository.DeleteAsync(expression);
 
@@ -49,7 +49,7 @@ namespace CredentialGuard.Core.Services
                 return new OperationResult
                 {
                     IsSucesss = true,
-                    Messages = new string[] { $"{nameof(Permission)} was added successfully" },
+                    Messages = new string[] { $"{nameof(PermissionType)} was added successfully" },
                 };
             }
 
@@ -60,15 +60,15 @@ namespace CredentialGuard.Core.Services
             };
         }
 
-        public async Task<PagedResult<Permission>> GetAsync(int id)
+        public async Task<PagedResult<PermissionType>> GetAsync(int id)
         {
-            Expression<Func<Permission, bool>> expression = i => i.Id == id;
+            Expression<Func<PermissionType, bool>> expression = i => i.Id == id;
 
             var model = await _repository.GetAsync(expression);
 
-            return new PagedResult<Permission>()
+            return new PagedResult<PermissionType>()
             {
-                Data = new List<Permission>
+                Data = new List<PermissionType>
                 {
                     model
                 },
@@ -77,11 +77,11 @@ namespace CredentialGuard.Core.Services
             };
         }
 
-        public async Task<PagedResult<Permission>> GetAllAsync()
+        public async Task<PagedResult<PermissionType>> GetAllAsync()
         {
             var result = await _repository.GetAllAsync();
 
-            return new PagedResult<Permission>()
+            return new PagedResult<PermissionType>()
             {
                 Data = result.ToList(),
                 CurrentPage = 1,
@@ -89,24 +89,23 @@ namespace CredentialGuard.Core.Services
             };
         }
 
-        public async Task<OperationResult> UpdateAsync(int id, Permission entity)
+        public async Task<OperationResult> UpdateAsync(int id, PermissionType entity)
         {
-            Expression<Func<Permission, bool>> expression = i => i.Id == id;
-            
-            var currentPermission = await _repository.GetAsync(expression);
+            Expression<Func<PermissionType, bool>> expression = i => i.Id == id;
 
-            currentPermission.PermissionTypeId = entity.PermissionTypeId;
-            currentPermission.EmployeeId = entity.EmployeeId;
-            currentPermission.UpdatedAt = DateTime.UtcNow;
+            var currentPermissionType = await _repository.GetAsync(expression);
 
-            var sucess = await _repository.UpdateAsync(currentPermission);
+            currentPermissionType.Description = entity.Description;
+            currentPermissionType.UpdatedAt = DateTime.UtcNow;
+
+            var sucess = await _repository.UpdateAsync(currentPermissionType);
 
             if (sucess)
             {
                 return new OperationResult
                 {
                     IsSucesss = true,
-                    Messages = new string[] { $"{nameof(Permission)} was added successfully" },
+                    Messages = new string[] { $"{nameof(PermissionType)} was added successfully" },
                 };
             }
 

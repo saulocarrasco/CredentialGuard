@@ -10,6 +10,8 @@ namespace CredentialGuard.Infrastructure.Glue
         public static void Give(this IServiceCollection services)
         {
             services.AddTransient(typeof(IService<Permission>), typeof(PermissionsService));
+            services.AddTransient(typeof(IService<PermissionType>), typeof(PermissionsTypesService));
+            services.AddTransient(typeof(IService<Employee>), typeof(EmployeeService));
         }
     }
 }

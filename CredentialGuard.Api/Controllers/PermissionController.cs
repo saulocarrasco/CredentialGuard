@@ -1,9 +1,6 @@
 ﻿using CredentialGuard.Core.Contracts;
 using CredentialGuard.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,36 +16,45 @@ namespace CredentialGuard.Api.Controllers
         {
             _permissionService = permissionService;
         }
-        // GET: api/<ValuesController>
+        // GET: api/<PermissionController>
         [HttpGet]
         public async Task<ActionResult> Get()
         {
             return Ok(await _permissionService.GetAllAsync());
         }
 
-        // GET api/<ValuesController>/5
+        // GET api/<PermissionController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            return "value";
+            return Ok(await _permissionService.GetAsync(id));
         }
 
-        // POST api/<ValuesController>
+        // POST api/<PermissionController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> Post([FromBody] Permission permission)
         {
+           var addResult = await _permissionService.AddAsync(permission);
+
+            return Ok(addResult);
         }
 
-        // PUT api/<ValuesController>/5
+        // PUT api/<PermissionController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> Put(int id, [FromBody] Permission permission)
         {
+            var updateResult = await _permissionService.UpdateAsync(id, permission);
+
+            return Ok(updateResult);
         }
 
-        // DELETE api/<ValuesController>/5
+        // DELETE api/<PermissionController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
+            var deleteResult = await _permissionService.DeleteAsync(id);
+
+            return Ok(deleteResult);
         }
     }
 }

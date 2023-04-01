@@ -11,6 +11,6 @@ namespace CredentialGuard.Core.Contracts
         Task<bool> AddAsync(T entity);
         Task<bool> UpdateAsync(T entity);
         Task<T> GetAsync(Expression<Func<T, bool>> expression);
-        Task<bool> DeleteAsync(T entity);
+        Task<bool> DeleteAsync(Expression<Func<T, bool>> expression);
     }
 }
