@@ -1,0 +1,14 @@
+﻿using CredentialGuard.Core.Contracts;
+using CredentialGuard.Core.Services;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace CredentialGuard.Infrastructure.Glue
+{
+    public static class ServiceDealer
+    {
+        public static void Give(this IServiceCollection services)
+        {
+            services.AddTransient(typeof(IService<>), typeof(PermissionsService));
+        }
+    }
+}
