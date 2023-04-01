@@ -15,31 +15,31 @@ namespace CredentialGuard.Infrastructure.Data
         {
             _dbContext = dbContext;
         }
-        public async Task<bool> Add(T entity)
+        public async Task<bool> AddAsync(T entity)
         {
             _dbContext.Set<T>().Add(entity);
 
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> Delete(T entity)
+        public async Task<bool> DeleteAsync(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
 
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<T> Get(Expression<Func<T, bool>> expression)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> expression)
         {
             return await _dbContext.Set<T>().FirstOrDefaultAsync(expression);
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public async Task<bool> Update(T entity)
+        public async Task<bool> UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
 
