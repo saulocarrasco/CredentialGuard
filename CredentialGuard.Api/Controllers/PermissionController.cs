@@ -47,6 +47,7 @@ namespace CredentialGuard.Api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] Permission permission)
         {
+            await _employeeService.UpdateAsync(permission.Employee.Id, permission.Employee);
             var updateResult = await _permissionService.UpdateAsync(id, permission);
 
             return Ok(updateResult);

@@ -3,6 +3,7 @@ using CredentialGuard.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace CredentialGuard.Infrastructure.Data
         }
         public async Task<bool> AddAsync(T entity)
         {
+            entity.Active = true;
             _dbContext.Set<T>().Add(entity);
 
             return await _dbContext.SaveChangesAsync() > 0;
@@ -24,7 +26,7 @@ namespace CredentialGuard.Infrastructure.Data
 
         public async Task<bool> DeleteAsync(Expression<Func<T, bool>> expression)
         {
-            var currentEntity = await _dbContext.Set<T>().FindAsync(expression);
+            var currentEntity = await _dbContext.Set<T>().FirstOrDefaultAsync(expression);
 
             currentEntity.Active = false;
 
@@ -46,7 +48,7 @@ namespace CredentialGuard.Infrastructure.Data
         {
             if (includes != null)
             {
-                return await _dbContext.Set<T>().Include(includes).ToListAsync();
+                return await _dbContext.Set<T>().Include(includes).Where(i=>i.Active == true).ToListAsync();
             }
             return await _dbContext.Set<T>().ToListAsync();
         }

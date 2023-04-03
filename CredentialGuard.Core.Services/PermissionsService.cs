@@ -50,7 +50,7 @@ namespace CredentialGuard.Core.Services
                 return new OperationResult<Permission>
                 {
                     IsSucesss = true,
-                    Messages = new string[] { $"{nameof(Permission)} was added successfully" },
+                    Messages = new string[] { $"{nameof(Permission)} was deleted successfully" },
                 };
             }
 
@@ -63,7 +63,7 @@ namespace CredentialGuard.Core.Services
 
         public async Task<PagedResult<Permission>> GetAsync(int id)
         {
-            Expression<Func<Permission, bool>> expression = i => i.Id == id;
+            Expression<Func<Permission, bool>> expression = i => i.Id == id && i.Active == true;
             Expression<Func<Permission, object>> includes = i => i.Employee;
 
             var model = await _repository.GetAsync(expression, includes);
@@ -96,12 +96,10 @@ namespace CredentialGuard.Core.Services
         public async Task<OperationResult<Permission>> UpdateAsync(int id, Permission entity)
         {
             Expression<Func<Permission, bool>> expression = i => i.Id == id;
-            Expression<Func<Permission, object>> includes = i => i.Employee;
 
-            var currentPermission = await _repository.GetAsync(expression, includes);
+            var currentPermission = await _repository.GetAsync(expression);
 
             currentPermission.PermissionTypeId = entity.PermissionTypeId;
-            currentPermission.EmployeeId = entity.EmployeeId;
             currentPermission.UpdatedAt = DateTime.UtcNow;
 
             var sucess = await _repository.UpdateAsync(currentPermission);
@@ -112,7 +110,7 @@ namespace CredentialGuard.Core.Services
                 {
                     EntityAffect = currentPermission,
                     IsSucesss = true,
-                    Messages = new string[] { $"{nameof(Permission)} was added successfully" },
+                    Messages = new string[] { $"{nameof(Permission)} was update successfully" },
                 };
             }
 
