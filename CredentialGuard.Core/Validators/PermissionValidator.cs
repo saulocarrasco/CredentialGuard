@@ -8,7 +8,7 @@ namespace CredentialGuard.Core.Validators
     {
         public PermissionValidator()
         {
-            RuleFor(p => p.EmployeeId)
+            RuleFor(p => p.Employee)
                 .NotEmpty()
                 .WithMessage(ErrorsMessage.EmptyEmployee);
 
