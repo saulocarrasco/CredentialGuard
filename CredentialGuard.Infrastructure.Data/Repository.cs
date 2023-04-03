@@ -24,8 +24,8 @@ namespace CredentialGuard.Infrastructure.Data
 
         public async Task<bool> DeleteAsync(Expression<Func<T, bool>> expression)
         {
-           var currentEntity = await _dbContext.Set<T>().FindAsync(expression);
-            
+            var currentEntity = await _dbContext.Set<T>().FindAsync(expression);
+
             currentEntity.Active = false;
 
             _dbContext.Entry(currentEntity).State = EntityState.Modified;
@@ -33,13 +33,21 @@ namespace CredentialGuard.Infrastructure.Data
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<T> GetAsync(Expression<Func<T, bool>> expression)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> expression, Expression<Func<T, object>> includes)
         {
+            if (includes != null)
+            {
+                return await _dbContext.Set<T>().Include(includes).FirstOrDefaultAsync(expression);
+            }
             return await _dbContext.Set<T>().FirstOrDefaultAsync(expression);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, object>> includes)
         {
+            if (includes != null)
+            {
+                return await _dbContext.Set<T>().Include(includes).ToListAsync();
+            }
             return await _dbContext.Set<T>().ToListAsync();
         }
 

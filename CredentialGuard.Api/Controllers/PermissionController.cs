@@ -12,9 +12,11 @@ namespace CredentialGuard.Api.Controllers
     public class PermissionController : ControllerBase
     {
         private readonly IService<Permission> _permissionService;
-        public PermissionController(IService<Permission> permissionService)
+        private readonly IService<Employee> _employeeService;
+        public PermissionController(IService<Permission> permissionService, IService<Employee> employeeService)
         {
             _permissionService = permissionService;
+            _employeeService = employeeService;
         }
         // GET: api/<PermissionController>
         [HttpGet]
@@ -34,9 +36,11 @@ namespace CredentialGuard.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Permission permission)
         {
-           var addResult = await _permissionService.AddAsync(permission);
+            var addEmployeeResult = await _employeeService.AddAsync(permission.Employee);
+            permission.EmployeeId = addEmployeeResult.EntityAffect.Id;
+            var addResult = await _permissionService.AddAsync(permission);
 
-            return Ok(addResult);
+            return CreatedAtAction(nameof(Post), addResult);
         }
 
         // PUT api/<PermissionController>/5

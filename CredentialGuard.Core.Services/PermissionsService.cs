@@ -18,27 +18,28 @@ namespace CredentialGuard.Core.Services
             _repository = repository;
         }
 
-        public async Task<OperationResult> AddAsync(Permission entity)
+        public async Task<OperationResult<Permission>> AddAsync(Permission entity)
         {
             var sucess = await _repository.AddAsync(entity);
 
             if (sucess)
             {
-                return new OperationResult
+                return new OperationResult<Permission>
                 {
+                    EntityAffect = entity,
                     IsSucesss = true,
                     Messages = new string[] { $"{nameof(Permission)} was added successfully" },
                 };
             }
 
-            return new OperationResult
+            return new OperationResult<Permission>
             {
                 IsSucesss = false,
                 Messages = new string[] { "Operation Fail" },
             };
         }
 
-        public async Task<OperationResult> DeleteAsync(int id)
+        public async Task<OperationResult<Permission>> DeleteAsync(int id)
         {
             Expression<Func<Permission, bool>> expression = i => i.Id == id;
 
@@ -46,14 +47,14 @@ namespace CredentialGuard.Core.Services
 
             if (sucess)
             {
-                return new OperationResult
+                return new OperationResult<Permission>
                 {
                     IsSucesss = true,
                     Messages = new string[] { $"{nameof(Permission)} was added successfully" },
                 };
             }
 
-            return new OperationResult
+            return new OperationResult<Permission>
             {
                 IsSucesss = false,
                 Messages = new string[] { "Operation Fail" },
@@ -63,8 +64,9 @@ namespace CredentialGuard.Core.Services
         public async Task<PagedResult<Permission>> GetAsync(int id)
         {
             Expression<Func<Permission, bool>> expression = i => i.Id == id;
+            Expression<Func<Permission, object>> includes = i => i.Employee;
 
-            var model = await _repository.GetAsync(expression);
+            var model = await _repository.GetAsync(expression, includes);
 
             return new PagedResult<Permission>()
             {
@@ -79,7 +81,9 @@ namespace CredentialGuard.Core.Services
 
         public async Task<PagedResult<Permission>> GetAllAsync()
         {
-            var result = await _repository.GetAllAsync();
+            Expression<Func<Permission, object>> includes = i => i.Employee;
+
+            var result = await _repository.GetAllAsync(includes);
 
             return new PagedResult<Permission>()
             {
@@ -89,11 +93,12 @@ namespace CredentialGuard.Core.Services
             };
         }
 
-        public async Task<OperationResult> UpdateAsync(int id, Permission entity)
+        public async Task<OperationResult<Permission>> UpdateAsync(int id, Permission entity)
         {
             Expression<Func<Permission, bool>> expression = i => i.Id == id;
-            
-            var currentPermission = await _repository.GetAsync(expression);
+            Expression<Func<Permission, object>> includes = i => i.Employee;
+
+            var currentPermission = await _repository.GetAsync(expression, includes);
 
             currentPermission.PermissionTypeId = entity.PermissionTypeId;
             currentPermission.EmployeeId = entity.EmployeeId;
@@ -103,14 +108,15 @@ namespace CredentialGuard.Core.Services
 
             if (sucess)
             {
-                return new OperationResult
+                return new OperationResult<Permission>
                 {
+                    EntityAffect = currentPermission,
                     IsSucesss = true,
                     Messages = new string[] { $"{nameof(Permission)} was added successfully" },
                 };
             }
 
-            return new OperationResult
+            return new OperationResult<Permission>
             {
                 IsSucesss = false,
                 Messages = new string[] { "Operation Fail" },

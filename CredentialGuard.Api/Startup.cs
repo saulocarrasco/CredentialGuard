@@ -17,6 +17,7 @@ namespace CredentialGuard.Api
 {
     public class Startup
     {
+        private readonly string SpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,6 +32,7 @@ namespace CredentialGuard.Api
             RepositoryDealer.Give(services);
             ServiceDealer.Give(services);
             FluentValidationConfigurator.Configure(services);
+            CorsHandleConfiguration.Configure(services, SpecificOrigins);
 
             services.AddControllers().ConfigureApiBehaviorOptions(options=> {
 
@@ -71,6 +73,8 @@ namespace CredentialGuard.Api
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(SpecificOrigins);
 
             app.UseEndpoints(endpoints =>
             {

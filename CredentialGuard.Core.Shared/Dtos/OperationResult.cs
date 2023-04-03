@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CredentialGuard.Core.Shared.Dtos
 {
-    public class OperationResult
+    public class OperationResult<T>
     {
+        public T EntityAffect { get; set; }
         public string[] Messages { get; set; }
         public bool IsSucesss { get; set; }
     }

@@ -18,27 +18,28 @@ namespace CredentialGuard.Core.Services
             _repository = repository;
         }
 
-        public async Task<OperationResult> AddAsync(Employee entity)
+        public async Task<OperationResult<Employee>> AddAsync(Employee entity)
         {
             var sucess = await _repository.AddAsync(entity);
 
             if (sucess)
             {
-                return new OperationResult
+                return new OperationResult<Employee>
                 {
+                    EntityAffect = entity,
                     IsSucesss = true,
                     Messages = new string[] { $"{nameof(Employee)} was added successfully" },
                 };
             }
 
-            return new OperationResult
+            return new OperationResult<Employee>
             {
                 IsSucesss = false,
                 Messages = new string[] { "Operation Fail" },
             };
         }
 
-        public async Task<OperationResult> DeleteAsync(int id)
+        public async Task<OperationResult<Employee>> DeleteAsync(int id)
         {
             Expression<Func<Employee, bool>> expression = i => i.Id == id;
 
@@ -46,14 +47,14 @@ namespace CredentialGuard.Core.Services
 
             if (sucess)
             {
-                return new OperationResult
+                return new OperationResult<Employee>
                 {
                     IsSucesss = true,
                     Messages = new string[] { $"{nameof(Employee)} was added successfully" },
                 };
             }
 
-            return new OperationResult
+            return new OperationResult<Employee>
             {
                 IsSucesss = false,
                 Messages = new string[] { "Operation Fail" },
@@ -89,7 +90,7 @@ namespace CredentialGuard.Core.Services
             };
         }
 
-        public async Task<OperationResult> UpdateAsync(int id, Employee entity)
+        public async Task<OperationResult<Employee>> UpdateAsync(int id, Employee entity)
         {
             Expression<Func<Employee, bool>> expression = i => i.Id == id;
 
@@ -103,14 +104,15 @@ namespace CredentialGuard.Core.Services
 
             if (sucess)
             {
-                return new OperationResult
+                return new OperationResult<Employee>
                 {
+                    EntityAffect = currentEmployee,
                     IsSucesss = true,
                     Messages = new string[] { $"{nameof(Employee)} was added successfully" },
                 };
             }
 
-            return new OperationResult
+            return new OperationResult<Employee>
             {
                 IsSucesss = false,
                 Messages = new string[] { "Operation Fail" },

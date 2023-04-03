@@ -18,27 +18,28 @@ namespace CredentialGuard.Core.Services
             _repository = repository;
         }
 
-        public async Task<OperationResult> AddAsync(PermissionType entity)
+        public async Task<OperationResult<PermissionType>> AddAsync(PermissionType entity)
         {
             var sucess = await _repository.AddAsync(entity);
 
             if (sucess)
             {
-                return new OperationResult
+                return new OperationResult<PermissionType>
                 {
+                    EntityAffect = entity,
                     IsSucesss = true,
                     Messages = new string[] { $"{nameof(PermissionType)} was added successfully" },
                 };
             }
 
-            return new OperationResult
+            return new OperationResult<PermissionType>
             {
                 IsSucesss = false,
                 Messages = new string[] { "Operation Fail" },
             };
         }
 
-        public async Task<OperationResult> DeleteAsync(int id)
+        public async Task<OperationResult<PermissionType>> DeleteAsync(int id)
         {
             Expression<Func<PermissionType, bool>> expression = i => i.Id == id;
 
@@ -46,14 +47,14 @@ namespace CredentialGuard.Core.Services
 
             if (sucess)
             {
-                return new OperationResult
+                return new OperationResult<PermissionType>
                 {
                     IsSucesss = true,
                     Messages = new string[] { $"{nameof(PermissionType)} was added successfully" },
                 };
             }
 
-            return new OperationResult
+            return new OperationResult<PermissionType>
             {
                 IsSucesss = false,
                 Messages = new string[] { "Operation Fail" },
@@ -89,7 +90,7 @@ namespace CredentialGuard.Core.Services
             };
         }
 
-        public async Task<OperationResult> UpdateAsync(int id, PermissionType entity)
+        public async Task<OperationResult<PermissionType>> UpdateAsync(int id, PermissionType entity)
         {
             Expression<Func<PermissionType, bool>> expression = i => i.Id == id;
 
@@ -102,14 +103,14 @@ namespace CredentialGuard.Core.Services
 
             if (sucess)
             {
-                return new OperationResult
+                return new OperationResult<PermissionType>
                 {
                     IsSucesss = true,
                     Messages = new string[] { $"{nameof(PermissionType)} was added successfully" },
                 };
             }
 
-            return new OperationResult
+            return new OperationResult<PermissionType>
             {
                 IsSucesss = false,
                 Messages = new string[] { "Operation Fail" },
